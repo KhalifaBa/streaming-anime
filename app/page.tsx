@@ -4,7 +4,9 @@ import Hero from "@/components/Hero";
 import AnimeCard from "@/components/AnimeCard";
 import { AnimeProp } from "@/types";
 import { usePathname } from "next/navigation";
+
 import { fetchTopAiringAnime, fetchRecentAnime } from "../utils";
+import { useEffect } from "react";
 
 export default async function Home() {
   const pathname = usePathname();
@@ -22,18 +24,22 @@ export default async function Home() {
         className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10"
       >
         {animeTrend.map((anime: AnimeProp) => (
-          <a href={pathname + "info/" + anime.id}>
-            <AnimeCard key={anime.title} anime={anime} />
-          </a>
+          <section key={anime.id}>
+            <a href={pathname + "info/" + anime.id}>
+              <AnimeCard key={anime.title} anime={anime} />
+            </a>
+          </section>
         ))}
       </section>
       <h2 className="text-3xl text-white font-bold">Les ajouts récents</h2>
 
       <section className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10">
         {animeRecent.map((anime: AnimeProp) => (
-          <a href={pathname + "info/" + anime.id}>
-            <AnimeCard key={anime.title} anime={anime} />
-          </a>
+          <section key={anime.id}>
+            <a href={pathname + "info/" + anime.id}>
+              <AnimeCard key={anime.title} anime={anime} />
+            </a>
+          </section>
         ))}
       </section>
     </div>

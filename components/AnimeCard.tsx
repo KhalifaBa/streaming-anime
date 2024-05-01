@@ -3,7 +3,7 @@ import { Prop } from "@/types";
 
 function AnimeCard({ anime }: Prop) {
   return (
-    <div className="max-w-sm rounded relative w-full">
+    <section key={anime.id} className="max-w-sm rounded relative w-full">
       <div className="relative w-full h-[37vh]">
         <Image
           src={anime.image.length < 1 ? "/missing_original.webp" : anime.image}
@@ -47,7 +47,7 @@ function AnimeCard({ anime }: Prop) {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

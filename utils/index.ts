@@ -1,4 +1,4 @@
-import { AnimeInfo, AnimeProp } from "@/types";
+import { AnimeProp } from "@/types";
 
 export const fetchTopAiringAnime = async () => {
   const results: AnimeProp[] = [];
@@ -23,11 +23,12 @@ export const fetchRecentAnime = async () => {
   data.results.map((anime: AnimeProp) => {
     results.push(anime);
   });
+
   results.length = 10;
   return results;
 };
+
 export const fetchAnime = async (animeId: string) => {
-  const results: AnimeInfo[] = [];
   const response = await fetch(
     `https://api-blush-nine-20.vercel.app/anime/zoro/info?id=${animeId}`
   );

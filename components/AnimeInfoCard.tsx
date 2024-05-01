@@ -4,7 +4,7 @@ import React from "react";
 
 const AnimeInfoCard = ({ anime }: PropsAnimeInfo) => {
   return (
-    <section className="bg-[#0F1117] mx-auto">
+    <section key={anime.id} className="bg-[#0F1117] mx-auto">
       <div className="anime-info-card bg-slate-900 p-10 shadow-md">
         <h2 className="text-2xl font-bold mb-10">{anime.title}</h2>
         <div className="flex items-center">
