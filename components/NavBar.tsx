@@ -8,12 +8,6 @@ import {
 } from "@nextui-org/navbar";
 import Link from "next/link";
 import { Input } from "@nextui-org/input";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/dropdown";
 
 const NavBar = () => {
   return (
