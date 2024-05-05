@@ -30,7 +30,7 @@ const AnimeInfoCard = ({ anime }: PropsAnimeInfo) => {
         <h3 className="text-xl font-bold mt-10">Recommendation</h3>
         <div className="flex justify-between w-full grid-rows-5 gap-10 items-center">
           {anime.recommendations.map((recommendation: Recommendation) => (
-            <div key={recommendation.id} className=" ">
+            <div key={recommendation.id} className="">
               <a href={recommendation.id}>
                 <div className="flex gap-4 items-center">
                   <img
