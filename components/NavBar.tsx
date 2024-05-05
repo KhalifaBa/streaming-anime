@@ -20,9 +20,9 @@ const NavBar = () => {
     <Navbar className=" bg-slate-950" isBordered>
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
-          <Link href="/">
+          <a href="/">
             <Image src="/logo.svg" alt="logo" width={40} height={40} />
-          </Link>
+          </a>
           <p className="hidden sm:block font-bold text-inherit">Anime</p>
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-3">

@@ -23,10 +23,10 @@ const AnimeInfoCard = ({ anime }: PropsAnimeInfo) => {
         <p className="text-white mt-5">Episodes: {anime.totalEpisodes}</p>
         <p className="text-white">Type: {anime.type}</p>
         <h3 className="text-xl font-bold mt-10">Recommendation</h3>
-        <div className="flex flex-row gap-10 items-center">
+        <div className="flex justify-between w-full grid-rows-5 gap-10 items-center">
           {anime.recommendations.map((recommendation: Recommendation) => (
-            <a href={recommendation.id}>
-              <div key={recommendation.id} className="flex w-full ">
+            <div key={recommendation.id} className=" ">
+              <a href={recommendation.id}>
                 <div className="flex gap-4 items-center">
                   <img
                     src={recommendation.image}
@@ -47,8 +47,8 @@ const AnimeInfoCard = ({ anime }: PropsAnimeInfo) => {
                     </p>
                   </div>
                 </div>
-              </div>
-            </a>
+              </a>
+            </div>
           ))}
         </div>
       </div>
