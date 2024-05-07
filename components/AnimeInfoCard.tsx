@@ -28,20 +28,25 @@ const AnimeInfoCard = ({ anime }: PropsAnimeInfo) => {
         </div>
 
         <h3 className="text-xl font-bold mt-10">Recommendation</h3>
-        <div className="flex justify-between w-full grid-rows-5 gap-10 items-center">
+        <div className="flex justify-between  w-full grid-rows-5 gap-10 items-center">
           {anime.recommendations.map((recommendation: Recommendation) => (
-            <div key={recommendation.id} className="">
+            <div
+              key={recommendation.id}
+              className="card card-compact w-50  bg-base-100 shadow-xl"
+            >
               <a href={recommendation.id}>
-                <div className="flex gap-4 items-center">
-                  <img
-                    src={recommendation.image}
-                    alt={recommendation.title}
-                    className="w-20 h-20 rounded-lg"
-                  />
+                <div>
+                  <figure>
+                    <Image
+                      src={recommendation.image}
+                      alt={recommendation.title}
+                      width={300}
+                      height={150}
+                      className="rounded-lg"
+                    />
+                  </figure>
                   <div>
-                    <h4 className="text-lg font-bold">
-                      {recommendation.title}
-                    </h4>
+                    <h4 className="card-title">{recommendation.title}</h4>
                     <p className="text-white">
                       Episodes :{" "}
                       {
