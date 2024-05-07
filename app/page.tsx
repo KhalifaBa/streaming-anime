@@ -1,15 +1,31 @@
+"use client";
 import Image from "next/image";
 import Hero from "@/components/Hero";
 import AnimeCard from "@/components/AnimeCard";
 import { AnimeProp } from "@/types";
 
 import { fetchTopAiringAnime, fetchRecentAnime } from "../utils";
-import { useEffect } from "react";
+import {useEffect,useState} from "react";
 
-export default async function Home() {
-  const animeRecent = await fetchRecentAnime();
 
-  const animeTrend = await fetchTopAiringAnime();
+export default function Home() {
+    const [animeRecent,setAnimeRecent] = useState<AnimeProp[]>([])
+    const [animeTrend,setAnimeTrend] = useState<AnimeProp[]>([])
+    useEffect(() => {
+        const fetchAnimeRecent = async () => {
+            const animeRecent = await fetchRecentAnime()
+
+            setAnimeRecent(animeRecent)
+        }
+        const fetchAnimeTrending = async () => {
+            const animeTrend = await fetchTopAiringAnime()
+            setAnimeTrend(animeTrend)
+        }
+        fetchAnimeTrending()
+        fetchAnimeRecent()
+    }, []);
+
+
   return (
     <div className="sm:p-16  py-16 px-12 flex flex-col gap-10">
       <div className="flex justify-center w-full bg-slate-900">
