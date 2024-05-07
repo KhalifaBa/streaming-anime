@@ -33,6 +33,6 @@ export const fetchAnime = async (animeId: string) => {
     `https://api-blush-nine-20.vercel.app/anime/zoro/info?id=${animeId}`
   );
   const data = await response.json();
-  data.recommendations.length = 5;
+  data.recommendations.length = 4;
   return data;
 };
