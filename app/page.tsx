@@ -12,13 +12,17 @@ export default function Home() {
     const [animeRecent,setAnimeRecent] = useState<AnimeProp[]>([])
     const [animeTrend,setAnimeTrend] = useState<AnimeProp[]>([])
     useEffect(() => {
-        const fetchAnime = async () => {
+        const fetchAnimeRecent = async () => {
             const animeRecent = await fetchRecentAnime()
-            const animeTrend = await fetchTopAiringAnime()
-            setAnimeTrend(animeTrend)
+
             setAnimeRecent(animeRecent)
         }
-        fetchAnime()
+        const fetchAnimeTrending = async () => {
+            const animeTrend = await fetchTopAiringAnime()
+            setAnimeTrend(animeTrend)
+        }
+        fetchAnimeTrending()
+        fetchAnimeRecent()
     }, []);
 
 
