@@ -62,3 +62,42 @@ export interface Recommendation {
   dub: number;
   episodes: number;
 }
+
+export interface StreamSource {
+  url: string;
+  type: string;
+  quality?: string;
+}
+
+export interface StreamServer {
+  name: string;
+  sources: StreamSource[];
+}
+
+export interface WatchHistoryEntry {
+  animeId: string;
+  animeTitle: string;
+  animeImage: string;
+  episodeId: string;
+  episodeNumber: number;
+  episodeTitle?: string;
+  progress: number;
+  duration: number;
+  timestamp: number;
+  server: string;
+}
+
+export interface RecentEpisode {
+  id: string;
+  title: string;
+  image: string;
+  japaneseTitle: string;
+  type: string;
+  nsfw: boolean;
+  sub: number;
+  dub: number;
+  episodes: number;
+  episodeNumber?: number;
+  url: string;
+  duration: string;
+}

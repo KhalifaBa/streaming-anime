@@ -1,61 +1,86 @@
 "use client";
-import Image from "next/image";
+
 import Hero from "@/components/Hero";
 import AnimeCard from "@/components/AnimeCard";
+import ContinueWatching from "@/components/ContinueWatching";
 import { AnimeProp } from "@/types";
-
 import { fetchTopAiringAnime, fetchRecentAnime } from "../utils";
-import {useEffect,useState} from "react";
-
+import { useEffect, useState } from "react";
 
 export default function Home() {
-    const [animeRecent,setAnimeRecent] = useState<AnimeProp[]>([])
-    const [animeTrend,setAnimeTrend] = useState<AnimeProp[]>([])
-    useEffect(() => {
-        const fetchAnimeRecent = async () => {
-            const animeRecent = await fetchRecentAnime()
+  const [animeRecent, setAnimeRecent] = useState<AnimeProp[]>([]);
+  const [animeTrend, setAnimeTrend] = useState<AnimeProp[]>([]);
+  const [loading, setLoading] = useState(true);
 
-            setAnimeRecent(animeRecent)
-        }
-        const fetchAnimeTrending = async () => {
-            const animeTrend = await fetchTopAiringAnime()
-            setAnimeTrend(animeTrend)
-        }
-        fetchAnimeTrending()
-        fetchAnimeRecent()
-    }, []);
-
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [recent, trend] = await Promise.all([
+          fetchRecentAnime(),
+          fetchTopAiringAnime(),
+        ]);
+        setAnimeRecent(recent);
+        setAnimeTrend(trend);
+      } catch {
+        // silently fail
+      }
+      setLoading(false);
+    };
+    load();
+  }, []);
 
   return (
-    <div className="sm:p-16  py-16 px-12 flex flex-col gap-10">
+    <div className="flex flex-col gap-10">
       <div className="flex justify-center w-full bg-slate-900">
         <Hero />
       </div>
-      <h2 className="text-3xl text-white font-bold">Les Animes du moments</h2>
 
-      <section
-        id="trend"
-        className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10"
-      >
-        {animeTrend.map((anime: AnimeProp) => (
-          <section key={anime.id}>
-            <a href={"info/" + anime.id}>
-              <AnimeCard key={anime.title} anime={anime} />
-            </a>
-          </section>
-        ))}
-      </section>
-      <h2 className="text-3xl text-white font-bold">Les ajouts récents</h2>
+      <div className="sm:p-16 py-8 px-8 flex flex-col gap-12">
+        <ContinueWatching />
 
-      <section className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10">
-        {animeRecent.map((anime: AnimeProp) => (
-          <section key={anime.id}>
-            <a href={"info/" + anime.id}>
-              <AnimeCard key={anime.title} anime={anime} />
-            </a>
-          </section>
-        ))}
-      </section>
+        <section>
+          <h2 className="text-3xl text-white font-bold mb-6 flex items-center gap-3">
+            <span className="w-1 h-8 bg-red-500 rounded-full" />
+            Tendances
+          </h2>
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="loading-spinner" />
+            </div>
+          ) : (
+            <div
+              id="trend"
+              className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6"
+            >
+              {animeTrend.map((anime: AnimeProp) => (
+                <a key={anime.id} href={`info/${anime.id}`}>
+                  <AnimeCard anime={anime} />
+                </a>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section>
+          <h2 className="text-3xl text-white font-bold mb-6 flex items-center gap-3">
+            <span className="w-1 h-8 bg-blue-500 rounded-full" />
+            Derniers episodes sortis
+          </h2>
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="loading-spinner" />
+            </div>
+          ) : (
+            <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+              {animeRecent.map((anime: AnimeProp) => (
+                <a key={anime.id} href={`info/${anime.id}`}>
+                  <AnimeCard anime={anime} />
+                </a>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
     </div>
   );
 }

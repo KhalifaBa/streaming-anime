@@ -14,12 +14,11 @@ function Hero() {
         />
         <h1 className="sm:text-6xl text-5xl text-white lg:max-w-lg font-bold leading-[120%]">
           Explorer les <span className="red-gradient">Divers royaumes</span> de
-          la magie de l'anime
-          <br />
+          la magie de l&apos;anime
         </h1>
         <Link
           href="#trend"
-          className=" bg-red-500 mt-5 text-center w-40 p-5 rounded-2xl"
+          className="bg-red-600 hover:bg-red-700 mt-5 text-center w-44 p-4 rounded-2xl font-semibold text-white transition-colors shadow-lg shadow-red-600/20"
           scroll={false}
         >
           Explorer
