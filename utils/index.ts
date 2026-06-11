@@ -1,29 +1,31 @@
 import { AnimeProp, StreamServer, WatchHistoryEntry } from "@/types";
 
-const BASE_URL = "https://api-blush-nine-20.vercel.app";
-
 export const fetchTopAiringAnime = async () => {
   const results: AnimeProp[] = [];
-  const response = await fetch(`${BASE_URL}/anime/zoro/top-airing`);
+  const response = await fetch("/api/anime/zoro/top-airing");
   const data = await response.json();
-  data.results.map((anime: AnimeProp) => results.push(anime));
-  results.length = 10;
+  if (data.results) {
+    data.results.map((anime: AnimeProp) => results.push(anime));
+    results.length = 10;
+  }
   return results;
 };
 
 export const fetchRecentAnime = async () => {
   const results: AnimeProp[] = [];
-  const response = await fetch(`${BASE_URL}/anime/zoro/recent-episodes`);
+  const response = await fetch("/api/anime/zoro/recent-episodes");
   const data = await response.json();
-  data.results.map((anime: AnimeProp) => results.push(anime));
-  results.length = 10;
+  if (data.results) {
+    data.results.map((anime: AnimeProp) => results.push(anime));
+    results.length = 10;
+  }
   return results;
 };
 
 export const fetchAnime = async (animeId: string) => {
-  const response = await fetch(`${BASE_URL}/anime/zoro/info?id=${animeId}`);
+  const response = await fetch(`/api/anime/zoro/info?id=${encodeURIComponent(animeId)}`);
   const data = await response.json();
-  data.recommendations.length = 4;
+  if (data.recommendations) data.recommendations.length = 4;
   return data;
 };
 
@@ -34,7 +36,7 @@ export const fetchStreamSources = async (
 ): Promise<StreamServer[]> => {
   try {
     const response = await fetch(
-      `${BASE_URL}/anime/zoro/watch?id=${episodeId}&server=${server}&category=${category}`
+      `/api/anime/zoro/watch?id=${encodeURIComponent(episodeId)}&server=${encodeURIComponent(server)}&category=${encodeURIComponent(category)}`
     );
     const data = await response.json();
     if (data.sources && data.sources.length > 0) {
