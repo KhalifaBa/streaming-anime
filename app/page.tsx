@@ -4,23 +4,30 @@ import Hero from "@/components/Hero";
 import AnimeCard from "@/components/AnimeCard";
 import ContinueWatching from "@/components/ContinueWatching";
 import { AnimeProp } from "@/types";
-import { fetchTopAiringAnime, fetchRecentAnime } from "../utils";
+import {
+  fetchTrendingAnime,
+  fetchPopularAnime,
+  fetchRecentEpisodes,
+} from "../utils";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [animeRecent, setAnimeRecent] = useState<AnimeProp[]>([]);
-  const [animeTrend, setAnimeTrend] = useState<AnimeProp[]>([]);
+  const [trending, setTrending] = useState<AnimeProp[]>([]);
+  const [popular, setPopular] = useState<AnimeProp[]>([]);
+  const [recent, setRecent] = useState<AnimeProp[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [recent, trend] = await Promise.all([
-          fetchRecentAnime(),
-          fetchTopAiringAnime(),
+        const [t, p, r] = await Promise.all([
+          fetchTrendingAnime(1, 12),
+          fetchPopularAnime(1, 12),
+          fetchRecentEpisodes(1, 12),
         ]);
-        setAnimeRecent(recent);
-        setAnimeTrend(trend);
+        setTrending(t);
+        setPopular(p);
+        setRecent(r);
       } catch {
         // silently fail
       }
@@ -50,9 +57,9 @@ export default function Home() {
           ) : (
             <div
               id="trend"
-              className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6"
+              className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-5"
             >
-              {animeTrend.map((anime: AnimeProp) => (
+              {trending.map((anime) => (
                 <a key={anime.id} href={`info/${anime.id}`}>
                   <AnimeCard anime={anime} />
                 </a>
@@ -64,15 +71,35 @@ export default function Home() {
         <section>
           <h2 className="text-3xl text-white font-bold mb-6 flex items-center gap-3">
             <span className="w-1 h-8 bg-blue-500 rounded-full" />
-            Derniers episodes sortis
+            En ce moment
           </h2>
           {loading ? (
             <div className="flex justify-center py-12">
               <div className="loading-spinner" />
             </div>
           ) : (
-            <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-              {animeRecent.map((anime: AnimeProp) => (
+            <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-5">
+              {recent.map((anime) => (
+                <a key={anime.id} href={`info/${anime.id}`}>
+                  <AnimeCard anime={anime} />
+                </a>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section>
+          <h2 className="text-3xl text-white font-bold mb-6 flex items-center gap-3">
+            <span className="w-1 h-8 bg-green-500 rounded-full" />
+            Les plus populaires
+          </h2>
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="loading-spinner" />
+            </div>
+          ) : (
+            <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-5">
+              {popular.map((anime) => (
                 <a key={anime.id} href={`info/${anime.id}`}>
                   <AnimeCard anime={anime} />
                 </a>

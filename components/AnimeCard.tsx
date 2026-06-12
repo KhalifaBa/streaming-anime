@@ -1,17 +1,21 @@
 import Image from "next/image";
-import { Prop } from "@/types";
+import { AnimeProp } from "@/types";
+import { getAnimeTitle, getAnimeImage } from "@/utils";
 
-function AnimeCard({ anime }: Prop) {
+function AnimeCard({ anime }: { anime: AnimeProp }) {
+  const title = getAnimeTitle(anime);
+  const image = getAnimeImage(anime);
+
   return (
     <section className="group rounded relative w-full cursor-pointer">
-      <div className="relative w-full h-[35vh] rounded-xl overflow-hidden">
+      <div className="relative w-full h-[30vh] rounded-xl overflow-hidden">
         <Image
-          src={anime.image.length < 1 ? "/missing_original.webp" : anime.image}
-          alt={anime.title}
+          src={image}
+          alt={title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
@@ -19,40 +23,40 @@ function AnimeCard({ anime }: Prop) {
             </svg>
           </div>
         </div>
-        <div className="absolute top-2 left-2">
-          <span className="bg-red-600/90 text-white text-xs font-bold px-2 py-0.5 rounded">
-            {anime.type || "TV"}
+        <div className="absolute top-2 left-2 flex gap-1.5">
+          <span className="bg-red-600/90 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+            {anime.format || "TV"}
           </span>
-        </div>
-      </div>
-
-      <div className="py-3 flex flex-col gap-1.5">
-        <h2 className="font-bold text-white text-base line-clamp-2 w-full group-hover:text-red-400 transition">
-          {anime.title}
-        </h2>
-        <div className="flex gap-3 items-center text-sm text-gray-400">
-          <span className="flex items-center gap-1">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-red-400">
-              <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18" />
-              <line x1="7" y1="2" x2="7" y2="22" />
-              <line x1="17" y1="2" x2="17" y2="22" />
-              <line x1="2" y1="12" x2="22" y2="12" />
-              <line x1="2" y1="7" x2="7" y2="7" />
-              <line x1="2" y1="17" x2="7" y2="17" />
-              <line x1="17" y1="7" x2="22" y2="7" />
-              <line x1="17" y1="17" x2="22" y2="17" />
-            </svg>
-            {anime.sub} ep.
-          </span>
-          {anime.duration && (
-            <span className="flex items-center gap-1">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-yellow-400">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12,6 12,12 16,14" />
-              </svg>
-              {anime.duration}
+          {anime.nextAiringEpisode && (
+            <span className="bg-green-600/90 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+              Ep {anime.nextAiringEpisode.episode}
             </span>
           )}
+        </div>
+        {anime.averageScore && (
+          <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+            </svg>
+            {anime.averageScore}%
+          </div>
+        )}
+      </div>
+
+      <div className="py-2.5 flex flex-col gap-1">
+        <h2 className="font-bold text-white text-sm line-clamp-2 w-full group-hover:text-red-400 transition">
+          {title}
+        </h2>
+        <div className="flex gap-2 items-center text-xs text-gray-400">
+          {anime.episodes && (
+            <span>{anime.episodes} ep.</span>
+          )}
+          {anime.duration && (
+            <span>{anime.duration}min</span>
+          )}
+          {anime.genres?.slice(0, 2).map((g) => (
+            <span key={g} className="text-gray-500">{g}</span>
+          ))}
         </div>
       </div>
     </section>

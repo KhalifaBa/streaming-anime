@@ -17,17 +17,20 @@ function ContinueWatching() {
 
   return (
     <div>
-      <h2 className="text-3xl text-white font-bold mb-6">Continuer a regarder</h2>
-      <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+      <h2 className="text-3xl text-white font-bold mb-6 flex items-center gap-3">
+        <span className="w-1 h-8 bg-orange-500 rounded-full" />
+        Continuer a regarder
+      </h2>
+      <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
         {entries.slice(0, 10).map((entry) => (
           <Link
-            key={`${entry.animeId}-${entry.episodeId}`}
-            href={`/watch/${encodeURIComponent(entry.episodeId)}`}
+            key={`${entry.animeId}-${entry.episodeNumber}`}
+            href={`/watch?id=${entry.animeId}&ep=${entry.episodeNumber}`}
             className="group"
           >
-            <div className="relative w-full h-[25vh] rounded-xl overflow-hidden">
+            <div className="relative w-full h-[22vh] rounded-xl overflow-hidden">
               <Image
-                src={entry.animeImage || "/missing_original.webp"}
+                src={entry.animeImage}
                 alt={entry.animeTitle}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
