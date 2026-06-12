@@ -1,13 +1,18 @@
 import { AnimeProp, AnimeInfo, SearchResult, StreamServer, WatchHistoryEntry } from "@/types";
 
-const ANILIST_ENDPOINT = "https://graphql.anilist.co";
+const ANILIST_PROXY = "/api/anilist";
 
 async function anilistQuery<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
-  const res = await fetch(ANILIST_ENDPOINT, {
+  const res = await fetch(ANILIST_PROXY, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query, variables }),
   });
+
+  if (!res.ok) {
+    throw new Error(`API error: ${res.status}`);
+  }
+
   const json = await res.json();
   if (json.errors) throw new Error(json.errors[0]?.message || "AniList error");
   return json.data;
@@ -133,10 +138,6 @@ export function getStreamEmbedUrls(animeTitle: string, episodeNumber: number): S
 
   return [
     {
-      name: "Vidstreaming",
-      url: `https://goload.pro/streaming.php?title=${encodeURIComponent(animeTitle)}&episode=${episodeNumber}`,
-    },
-    {
       name: "GogoAnime",
       url: `https://gogoanime3.net/${slug}-episode-${episodeNumber}`,
     },
@@ -144,11 +145,11 @@ export function getStreamEmbedUrls(animeTitle: string, episodeNumber: number): S
       name: "AniNeko",
       url: `https://anineko.to/anime/${slug}-episode-${episodeNumber}`,
     },
+    {
+      name: "Vidstreaming",
+      url: `https://goload.pro/streaming.php?title=${encodeURIComponent(animeTitle)}&episode=${episodeNumber}`,
+    },
   ];
-}
-
-export function getGogoAnimeEmbedUrl(gogoAnimeId: string, episode: number): string {
-  return `https://goload.pro/streaming.php?id=${gogoAnimeId}&episode=${episode}`;
 }
 
 // --- Watch History (localStorage) ---
@@ -201,7 +202,7 @@ export const getContinueWatching = (): WatchHistoryEntry[] => {
   return getWatchHistory().filter((h) => h.progress < 0.9 && h.duration > 0);
 };
 
-// --- Helper ---
+// --- Helpers ---
 
 export function getAnimeTitle(anime: { title: { english: string | null; romaji: string | null } }): string {
   return anime.title.english || anime.title.romaji || "Unknown";

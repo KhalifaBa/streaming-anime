@@ -16,6 +16,7 @@ export default function Home() {
   const [popular, setPopular] = useState<AnimeProp[]>([]);
   const [recent, setRecent] = useState<AnimeProp[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -28,8 +29,8 @@ export default function Home() {
         setTrending(t);
         setPopular(p);
         setRecent(r);
-      } catch {
-        // silently fail
+      } catch (e) {
+        setError("Impossible de charger les animes. Vérifiez votre connexion et réessayez.");
       }
       setLoading(false);
     };
@@ -44,6 +45,18 @@ export default function Home() {
 
       <div className="sm:p-16 py-8 px-8 flex flex-col gap-12">
         <ContinueWatching />
+
+        {error && (
+          <div className="bg-red-900/30 border border-red-600/30 rounded-xl p-6 text-center">
+            <p className="text-red-400 text-lg mb-3">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition"
+            >
+              Réessayer
+            </button>
+          </div>
+        )}
 
         <section>
           <h2 className="text-3xl text-white font-bold mb-6 flex items-center gap-3">
